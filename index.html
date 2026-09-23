@@ -423,96 +423,54 @@ loadTheme();
   </div> 
  
 
+ 
+  <div class="stats"> 
+ 
+    <div class="stat"> 
+      <strong id="totalQuizzes">0</strong> 
+      Quizzes 
+    </div> 
+ 
+    <div class="stat"> 
+      <strong id="bestScore">0</strong> 
+      Best Score 
+    </div> 
+ 
+    <div class="stat"> 
+      <strong id="savedWords">0</strong> 
+      Saved Words 
+    </div> 
+ 
+  </div> 
+ 
+  <button 
+    class="btn" 
+    style="width:100%; margin-top:25px;" 
+    onclick="showPage('challenge')"> 
+    🎯 Practice Now 
+  </button> 
+ 
+</div> 
+  
 
-        .card h2 {
-            color: #7dd3fc;
-            margin-bottom: 15px;
-        }
+<div class="section-title"> 
+  <h2>ℹ️ About Daily Word NZ</h2> 
+</div> 
+ 
+<div class="about-card"> 
+ 
+  <h2>Learn something new every day 🇳🇿</h2> 
+ 
+  <p> 
+    Daily Word NZ is a simple vocabulary learning website designed 
+    to help you discover new words, understand their meanings and 
+    practise them through quizzes. 
+  </p> 
+ 
+  <br> 
+ 
+  <p> 
 
-        .meaning {
-            line-height: 1.7;
-        }
-
-        .example {
-            margin-top: 15px;
-            font-style: italic;
-        }
-
-        body.light .card {
-            background: white;
-            color: black;
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px;
-            opacity: 0.8;
-        }
-
-        .no-results {
-            text-align: center;
-            grid-column: 1 / -1;
-            padding: 40px;
-            font-size: 20px;
-        }
-
-        @media (max-width: 800px) {
-
-            nav {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            nav ul {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .hero h1 {
-                font-size: 38px;
-            }
-
-        }
-
-    </style>
-
-</head>
-
-<body>
-
-<nav>
-
-    <div class="logo">
-        
-    </div>
-
-    <ul>
-
-
-    </ul>
-
-    <button onclick="toggleTheme()">
-        🌙
-    </button>
-
-</nav>
-
-<section class="hero">
-
-    <h1>📚 Word Library</h1>
-
-    <p>
-        Explore useful English words and improve your vocabulary.
-    </p>
-
-    <div class="search">
-
-        <input
-            type="text"
-            id="searchInput"
-            placeholder="Search for a word..."
-            onkeyup="searchWords()"
-        >
 
     </div>
 
