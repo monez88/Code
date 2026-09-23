@@ -116,77 +116,41 @@
     </p> 
 
       
+</div> 
+  
 
+<div class="section-title"> 
+  <h2>📚 Word Library</h2> 
+  <p>Search and explore your vocabulary.</p> 
+</div> 
+ 
+<div class="controls"> 
+ 
+  <input 
+    id="wordSearch" 
+    type="search" 
+    placeholder="🔎 Search for a word..." 
+    oninput="renderWords()"> 
+ 
+  <select id="categoryFilter" onchange="renderWords()"> 
+    <option value="all">All Categories</option> 
+    <option value="Nature">Nature</option> 
+    <option value="People">People</option> 
+    <option value="Learning">Learning</option> 
+    <option value="Emotions">Emotions</option> 
+    <option value="Places">Places</option> 
+    <option value="Everyday">Everyday</option> 
+  </select> 
+ 
+  <select id="levelFilter" onchange="renderWords()"> 
+    <option value="all">All Levels</option> 
+    <option value="Beginner">Beginner</option> 
+    <option value="Intermediate">Intermediate</option> 
+    <option value="Advanced">Advanced</option> 
+  </select> 
+ 
+</div> 
 
-        .definition {
-            font-size: 18px;
-            line-height: 1.8;
-        }
-
-        .learn {
-            margin-top: 25px;
-            display: inline-block;
-            padding: 12px 25px;
-            background: #0ea5e9;
-            border-radius: 10px;
-            text-decoration: none;
-            color: white;
-        }
-
-        .learn:hover {
-            background: #0284c7;
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px;
-            margin-top: 40px;
-            opacity: 0.8;
-        }
-
-        body.light nav {
-            background: white;
-        }
-
-        body.light nav a {
-            color: black;
-        }
-
-        body.light .logo {
-            color: #2563eb;
-        }
-
-        body.light .card {
-            background: white;
-            color: black;
-        }
-
-        @media (max-width: 800px) {
-            nav {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            nav ul {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .hero h1 {
-                font-size: 38px;
-            }
-
-            .word {
-                font-size: 34px;
-            }
-        }
-    </style>
-</head>
-
-<body>
-
-<nav>
-    <div class="logo">Daily Word NZ</div>
 
     
 
