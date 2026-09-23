@@ -33,38 +33,47 @@
     <button class="btn purple" onclick="showPage('challenge')"> 
       🎯 Start Challenge 
 
+   </button> 
+  </div> 
+</div> 
+ 
+ 
+<div class="daily-card"> 
+ 
+  <div class="badges"> 
+    <span class="badge" id="todayDate">Today</span> 
+    <span class="badge" id="dailyCategory">Category</span> 
+  </div> 
+ 
+  <div class="daily-word"> 
+ 
+    <h2 id="dailyWord">Loading...</h2> 
+ 
+    <div class="pronunciation" id="dailyPronunciation"> 
+      ... 
+    </div> 
+ 
+    <p class="meaning" id="dailyMeaning"> 
+      ... 
+    </p> 
+ 
+    <div class="example" id="dailyExample"> 
+      ... 
+    </div> 
+ 
+    <div class="card-actions"> 
+ 
+      <button class="btn" onclick="speakDailyWord()"> 
+        🔊 Pronounce 
+      </button> 
+ 
+      <button 
+        class="btn secondary" 
+        id="dailyFavorite" 
+        onclick="toggleDailyFavorite()"> 
+        ☆ Save 
 
-        .logo {
-            font-size: 28px;
-            font-weight: 700;
-        }
-
-        nav ul {
-            display: flex;
-            gap: 25px;
-            list-style: none;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            transition: 0.3s;
-        }
-
-        nav a:hover {
-            color: #38bdf8;
-        }
-
-        button {
-            padding: 10px 18px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            background: #38bdf8;
-            color: white;
-            font-weight: bold;
-            transition: 0.3s;
-        }
+      
 
         button:hover {
             transform: scale(1.08);
