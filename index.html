@@ -1,491 +1,1648 @@
-<div class="logo" onclick="showPage('home')"> 
-  🇳🇿 Daily Word NZ 
-</div> 
- 
-<button class="menu-btn" onclick="toggleMenu()">☰</button> 
- 
-<ul class="nav-links" id="navLinks"> 
-  <li><a href="#" onclick="showPage('home'); return false;">Home</a></li> 
-  <li><a href="#" onclick="showPage('words'); return false;">Words</a></li> 
-  <li><a href="#" onclick="showPage('challenge'); return false;">Challenge</a></li> 
-  <li><a href="#" onclick="showPage('progress'); return false;">Progress</a></li> 
-  <li><a href="#" onclick="showPage('about'); return false;">About</a></li> 
-</ul> 
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <button class="theme-btn" onclick="toggleTheme()" id="themeButton"> 
-  🌙 
-</button> 
-  
+    <title>Daily Word NZ</title>
 
-<div class="hero"> 
-  <h1>Learn a <span>New Word</span> Every Day</h1> 
- 
-  <p> 
-    Build your vocabulary, test your knowledge and discover 
-    interesting words with Daily Word NZ. 
-  </p> 
- 
-  <div class="hero-buttons"> 
-    <button class="btn" onclick="showPage('words')"> 
-      📚 Explore Words 
-    </button> 
- 
-    <button class="btn purple" onclick="showPage('challenge')"> 
-      🎯 Start Challenge 
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-   </button> 
-  </div> 
-</div> 
- 
- 
-<div class="daily-card"> 
- 
-  <div class="badges"> 
-    <span class="badge" id="todayDate">Today</span> 
-    <span class="badge" id="dailyCategory">Category</span> 
-  </div> 
- 
-  <div class="daily-word"> 
- 
-    <h2 id="dailyWord">Loading...</h2> 
- 
-    <div class="pronunciation" id="dailyPronunciation"> 
-      ... 
-    </div> 
- 
-    <p class="meaning" id="dailyMeaning"> 
-      ... 
-    </p> 
- 
-    <div class="example" id="dailyExample"> 
-      ... 
-    </div> 
- 
-    <div class="card-actions"> 
- 
-      <button class="btn" onclick="speakDailyWord()"> 
-        🔊 Pronounce 
-      </button> 
- 
-      <button 
-        class="btn secondary" 
-        id="dailyFavorite" 
-        onclick="toggleDailyFavorite()"> 
-        ☆ Save 
+        :root {
+            --bg: #0f172a;
+            --card: #1e293b;
+            --text: #f8fafc;
+            --muted: #94a3b8;
+            --primary: #38bdf8;
+            --purple: #a78bfa;
+            --border: #334155;
+            --success: #22c55e;
+            --danger: #ef4444;
+        }
 
-      
- 
-      </button> 
- 
-      <button 
-        class="btn secondary" 
-        onclick="copyDailyWord()"> 
-        📋 Copy 
-      </button> 
- 
-    </div> 
- 
-  </div> 
- 
-</div> 
- 
- 
-<div class="features"> 
- 
-  <div class="feature-card"> 
-    <div class="icon">📚</div> 
-    <h3>Word Library</h3> 
-    <p> 
-      Explore words by category and difficulty level. 
-    </p> 
-  </div> 
- 
-  <div class="feature-card"> 
-    <div class="icon">🎯</div> 
-    <h3>Daily Challenge</h3> 
-    <p> 
-      Test yourself with a 10-question vocabulary quiz. 
-    </p> 
-  </div> 
- 
-  <div class="feature-card"> 
-    <div class="icon">📊</div> 
-    <h3>Track Progress</h3> 
-    <p> 
-      Keep track of your quiz score and learning progress. 
-    </p> 
+        body.light {
+            --bg: #f1f5f9;
+            --card: #ffffff;
+            --text: #0f172a;
+            --muted: #64748b;
+            --border: #cbd5e1;
+        }
 
-      
-</div> 
-  
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            transition: background 0.3s, color 0.3s;
+        }
 
-<div class="section-title"> 
-  <h2>📚 Word Library</h2> 
-  <p>Search and explore your vocabulary.</p> 
-</div> 
- 
-<div class="controls"> 
- 
-  <input 
-    id="wordSearch" 
-    type="search" 
-    placeholder="🔎 Search for a word..." 
-    oninput="renderWords()"> 
- 
-  <select id="categoryFilter" onchange="renderWords()"> 
-    <option value="all">All Categories</option> 
-    <option value="Nature">Nature</option> 
-    <option value="People">People</option> 
-    <option value="Learning">Learning</option> 
-    <option value="Emotions">Emotions</option> 
-    <option value="Places">Places</option> 
-    <option value="Everyday">Everyday</option> 
-  </select> 
- 
-  <select id="levelFilter" onchange="renderWords()"> 
-    <option value="all">All Levels</option> 
-    <option value="Beginner">Beginner</option> 
-    <option value="Intermediate">Intermediate</option> 
-    <option value="Advanced">Advanced</option> 
-  </select> 
- 
-</div> 
+        /* NAVIGATION */
 
+        nav {
+            width: 100%;
+            padding: 18px 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
 
-    
+        .logo {
+            font-size: 1.4rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
 
-    <button onclick="toggleTheme()">🌙</button>
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .menu-btn,
+        .theme-btn {
+            border: none;
+            background: transparent;
+            color: var(--text);
+            font-size: 1.4rem;
+            cursor: pointer;
+        }
+
+        .menu-btn {
+            display: none;
+        }
+
+        /* PAGES */
+
+        .page {
+            display: none;
+            max-width: 1100px;
+            margin: auto;
+            padding: 50px 20px;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* HERO */
+
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.2rem, 6vw, 4rem);
+            margin-bottom: 20px;
+        }
+
+        .hero h1 span {
+            color: var(--primary);
+        }
+
+        .hero p {
+            max-width: 650px;
+            margin: auto;
+            color: var(--muted);
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        /* BUTTONS */
+
+        .btn {
+            border: none;
+            border-radius: 10px;
+            padding: 13px 20px;
+            background: var(--primary);
+            color: #082f49;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        .btn.purple {
+            background: var(--purple);
+            color: #1e1b4b;
+        }
+
+        .btn.secondary {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        /* DAILY CARD */
+
+        .daily-card,
+        .card,
+        .quiz-card,
+        .quiz-result,
+        .progress-card,
+        .about-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .daily-card {
+            max-width: 850px;
+            margin: 0 auto 60px;
+        }
+
+        .badges,
+        .quiz-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--primary);
+            padding: 7px 12px;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .daily-word {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .daily-word h2 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .pronunciation {
+            color: var(--muted);
+            margin-bottom: 20px;
+        }
+
+        .meaning {
+            font-size: 1.15rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .example {
+            background: rgba(56, 189, 248, 0.08);
+            border-left: 4px solid var(--primary);
+            padding: 15px;
+            border-radius: 8px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .card-actions {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        /* SECTION */
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .section-title h2 {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .section-title p {
+            color: var(--muted);
+        }
+
+        /* FEATURES */
+
+        .features,
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 1100px;
+            margin: 0 auto 60px;
+            padding: 0 20px;
+        }
+
+        .feature-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 25px;
+            border-radius: 16px;
+        }
+
+        .feature-card .icon {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .feature-card p {
+            color: var(--muted);
+            line-height: 1.6;
+            margin-top: 10px;
+        }
+
+        /* CONTROLS */
+
+        .controls {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 13px 15px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: var(--text);
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: var(--primary);
+        }
+
+        /* WORD GRID */
+
+        .word-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .word-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 22px;
+            border-radius: 15px;
+        }
+
+        .word-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .word-card .pronunciation {
+            font-size: 0.9rem;
+        }
+
+        .word-card p {
+            color: var(--muted);
+            line-height: 1.6;
+            margin: 12px 0;
+        }
+
+        .word-meta {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .word-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .small-btn {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text);
+            cursor: pointer;
+        }
+
+        .small-btn:hover {
+            border-color: var(--primary);
+        }
+
+        /* QUIZ */
+
+        .quiz-card {
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .question {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin: 40px 0 25px;
+        }
+
+        .answers {
+            display: grid;
+            gap: 12px;
+        }
+
+        .answer-btn {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text);
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 1rem;
+        }
+
+        .answer-btn:hover {
+            border-color: var(--primary);
+        }
+
+        .answer-btn.correct {
+            background: rgba(34, 197, 94, 0.2);
+            border-color: var(--success);
+        }
+
+        .answer-btn.wrong {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: var(--danger);
+        }
+
+        #nextButton {
+            display: block;
+            margin: 20px auto 0;
+        }
+
+        .quiz-result {
+            max-width: 800px;
+            margin: 25px auto;
+            text-align: center;
+            display: none;
+        }
+
+        /* PROGRESS */
+
+        .progress-card {
+            max-width: 800px;
+            margin: auto;
+            text-align: center;
+        }
+
+        .progress-number {
+            font-size: 4rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 15px;
+            background: var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 20px 0 30px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(
+                90deg,
+                var(--primary),
+                var(--purple)
+            );
+            transition: width 0.5s;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .stat {
+            padding: 15px;
+            background: rgba(56, 189, 248, 0.08);
+            border-radius: 10px;
+        }
+
+        .stat strong {
+            display: block;
+            font-size: 1.6rem;
+            margin-bottom: 5px;
+        }
+
+        /* ABOUT */
+
+        .about-card {
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .about-card p {
+            color: var(--muted);
+            line-height: 1.8;
+            margin-top: 15px;
+        }
+
+        /* FOOTER */
+
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            margin-top: 50px;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 800px) {
+            .menu-btn {
+                display: block;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                display: none;
+                flex-direction: column;
+                padding: 20px;
+                background: var(--bg);
+                border-bottom: 1px solid var(--border);
+            }
+
+            .nav-links.open {
+                display: flex;
+            }
+
+            .features,
+            .cards,
+            .word-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .controls {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .daily-word h2 {
+                font-size: 2.3rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav>
+    <div class="logo" onclick="showPage('home')">
+        🇳🇿 Daily Word NZ
+    </div>
+
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+
+    <ul class="nav-links" id="navLinks">
+        <li><a href="#" onclick="showPage('home'); return false;">Home</a></li>
+        <li><a href="#" onclick="showPage('words'); return false;">Words</a></li>
+        <li><a href="#" onclick="showPage('challenge'); return false;">Challenge</a></li>
+        <li><a href="#" onclick="showPage('progress'); return false;">Progress</a></li>
+        <li><a href="#" onclick="showPage('about'); return false;">About</a></li>
+    </ul>
+
+    <button class="theme-btn" onclick="toggleTheme()" id="themeButton">
+        🌙
+    </button>
 </nav>
 
-<section class="hero">
 
-    <div class="date" id="date"></div>
+<!-- HOME -->
 
-    <h1>Word of the Day</h1>
+<section id="home" class="page active">
 
-    <p>Learn one new English word every day.</p>
+    <div class="hero">
+        <h1>Learn a <span>New Word</span> Every Day</h1>
 
-    <div class="search">
-        <input
-            type="text"
-            id="searchInput"
-            placeholder="Search words..."
-            onkeydown="searchWord(event)"
-        >
+        <p>
+            Build your vocabulary, test your knowledge and discover
+            interesting words with Daily Word NZ.
+        </p>
+
+        <div class="hero-buttons">
+            <button class="btn" onclick="showPage('words')">
+                📚 Explore Words
+            </button>
+
+            <button class="btn purple" onclick="showPage('challenge')">
+                🎯 Start Challenge
+            </button>
+        </div>
+    </div>
+
+    <div class="daily-card">
+
+        <div class="badges">
+            <span class="badge" id="todayDate">Today</span>
+            <span class="badge" id="dailyCategory">Category</span>
+        </div>
+
+        <div class="daily-word">
+
+            <h2 id="homeDailyWord">Loading...</h2>
+
+            <div class="pronunciation" id="homeDailyPronunciation">
+                /.../
+            </div>
+
+            <p class="meaning" id="homeDailyMeaning">
+                Loading...
+            </p>
+
+            <div class="example" id="homeDailyExample">
+                Loading...
+            </div>
+
+            <div class="card-actions">
+
+                <button class="btn" onclick="speakDailyWord()">
+                    🔊 Pronounce
+                </button>
+
+                <button
+                    class="btn secondary"
+                    id="dailyFavorite"
+                    onclick="toggleDailyFavorite()">
+                    ☆ Save
+                </button>
+
+                <button
+                    class="btn secondary"
+                    onclick="copyDailyWord()">
+                    📋 Copy
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="features">
+
+        <div class="feature-card">
+            <div class="icon">📚</div>
+            <h3>Word Library</h3>
+            <p>
+                Explore words by category and difficulty level.
+            </p>
+        </div>
+
+        <div class="feature-card">
+            <div class="icon">🎯</div>
+            <h3>Daily Challenge</h3>
+            <p>
+                Test yourself with a 10-question vocabulary quiz.
+            </p>
+        </div>
+
+        <div class="feature-card">
+            <div class="icon">📊</div>
+            <h3>Track Progress</h3>
+            <p>
+                Keep track of your quiz score and learning progress.
+            </p>
+        </div>
+
     </div>
 
 </section>
 
-<section class="cards">
 
-    <div class="card">
+<!-- WORDS -->
 
-        <h2>📖 Today's Word</h2>
+<section id="words" class="page">
 
-        <div class="word" id="dailyWord">
-            Resilient
-        </div>
+    <div class="section-title">
+        <h2>📚 Word Library</h2>
+        <p>Search and explore your vocabulary.</p>
+    </div>
 
-        <div class="definition">
-            <strong>Meaning:</strong>
-            <br><br>
+    <div class="controls">
 
-            <span id="definition">
-                Able to recover quickly from difficulties or adapt well to change.
+        <input
+            id="wordSearch"
+            type="search"
+            placeholder="🔎 Search for a word..."
+            oninput="renderWords()"
+        >
+
+        <select id="categoryFilter" onchange="renderWords()">
+            <option value="all">All Categories</option>
+            <option value="Nature">Nature</option>
+            <option value="People">People</option>
+            <option value="Learning">Learning</option>
+            <option value="Emotions">Emotions</option>
+            <option value="Places">Places</option>
+            <option value="Everyday">Everyday</option>
+        </select>
+
+        <select id="levelFilter" onchange="renderWords()">
+            <option value="all">All Levels</option>
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
+        </select>
+
+    </div>
+
+    <div class="word-grid" id="wordGrid"></div>
+
+</section>
+
+
+<!-- CHALLENGE -->
+
+<section id="challenge" class="page">
+
+    <div class="section-title">
+        <h2>🎯 Vocabulary Challenge</h2>
+        <p>Answer 10 questions and see how much you know.</p>
+    </div>
+
+    <div class="quiz-card" id="quizCard">
+
+        <div class="quiz-top">
+            <span class="badge" id="quizCounter">
+                Question 1 of 10
+            </span>
+
+            <span class="badge" id="quizScore">
+                Score: 0
             </span>
         </div>
 
-        <a
-           
-           
-    
+        <div class="question" id="question">
+            Loading...
+        </div>
+
+        <div class="answers" id="answers"></div>
+
+        <button
+            id="nextButton"
+            class="btn"
+            onclick="nextQuestion()"
+            style="display:none;">
+            Next Question →
+        </button>
 
     </div>
 
-    <div class="card">
+    <div class="quiz-result" id="quizResult">
 
-        <h2>💡 Example</h2>
+        <h2>🎉 Challenge Complete!</h2>
 
-        <p
-            id="example"
-            style="margin-top:20px; line-height:1.8;"
-        >
-            "The resilient student kept trying until they solved the problem."
-        </p>
+        <p id="finalScore"></p>
 
-    </div>
+        <button
+            class="btn purple"
+            onclick="startQuiz()"
+            style="margin-top:20px;">
+            🔄 Try Again
+        </button>
 
-    <div class="card">
-
-        <h2>🎯 Challenge</h2>
-
-        <p style="margin-top:20px; line-height:1.8;">
-            Can you use today's word in three different sentences?
-        </p>
-
-        <a 
-            
-        </a>
+        <button
+            class="btn"
+            onclick="showPage('progress')"
+            style="margin-top:20px;">
+            📊 View Progress
+        </button>
 
     </div>
 
 </section>
 
+
+<!-- PROGRESS -->
+
+<section id="progress" class="page">
+
+    <div class="section-title">
+        <h2>📊 Your Progress</h2>
+        <p>Keep learning and build your vocabulary.</p>
+    </div>
+
+    <div class="progress-card">
+
+        <div class="progress-number" id="progressPercent">
+            0%
+        </div>
+
+        <div class="progress-bar">
+            <div
+                class="progress-fill"
+                id="progressFill">
+            </div>
+        </div>
+
+        <div class="stats">
+
+            <div class="stat">
+                <strong id="totalQuizzes">0</strong>
+                Quizzes
+            </div>
+
+            <div class="stat">
+                <strong id="bestScore">0</strong>
+                Best Score
+            </div>
+
+            <div class="stat">
+                <strong id="savedWords">0</strong>
+                Saved Words
+            </div>
+
+        </div>
+
+        <button
+            class="btn"
+            style="width:100%; margin-top:25px;"
+            onclick="showPage('challenge')">
+            🎯 Practice Now
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- ABOUT -->
+
+<section id="about" class="page">
+
+    <div class="section-title">
+        <h2>ℹ️ About Daily Word NZ</h2>
+    </div>
+
+    <div class="about-card">
+
+        <h2>Learn something new every day 🇳🇿</h2>
+
+        <p>
+            Daily Word NZ is a simple vocabulary learning website
+            designed to help you discover new words, understand their
+            meanings and practise them through quizzes.
+        </p>
+
+        <p>
+            Explore the library, save your favourite words, listen to
+            pronunciations and challenge yourself with the vocabulary quiz.
+        </p>
+
+        <p>
+            Keep practising a little every day and your vocabulary will
+            continue to grow.
+        </p>
+
+    </div>
+
+</section>
+
+
 <footer>
-    
+    © 2026 Daily Word NZ | Built by Saimone Matangi
 </footer>
+
 
 <script>
 
 const words = [
+
     {
         word: "Resilient",
-        definition: "Able to recover quickly from difficulties or adapt well to change.",
-        example: "\"The resilient student kept trying until they solved the problem.\""
+        pronunciation: "/rɪˈzɪliənt/",
+        definition:
+            "Able to recover quickly from difficulties or adapt well to change.",
+        example:
+            "The resilient student kept trying until they solved the problem.",
+        category: "People",
+        level: "Intermediate"
     },
+
     {
         word: "Curious",
-        definition: "Wanting to learn or know more about something.",
-        example: "\"The curious student asked many interesting questions.\""
+        pronunciation: "/ˈkjʊəriəs/",
+        definition:
+            "Wanting to learn or know more about something.",
+        example:
+            "The curious student asked many interesting questions.",
+        category: "Learning",
+        level: "Beginner"
     },
+
     {
         word: "Determined",
-        definition: "Having a strong desire to achieve something.",
-        example: "\"She was determined to finish the project.\""
+        pronunciation: "/dɪˈtɜːmɪnd/",
+        definition:
+            "Having a strong desire to achieve something.",
+        example:
+            "She was determined to finish the project.",
+        category: "People",
+        level: "Intermediate"
     },
+
     {
         word: "Grateful",
-        definition: "Feeling thankful or appreciative.",
-        example: "\"He was grateful for the support from his friends.\""
+        pronunciation: "/ˈɡreɪtfəl/",
+        definition:
+            "Feeling thankful or appreciative.",
+        example:
+            "He was grateful for the support from his friends.",
+        category: "Emotions",
+        level: "Beginner"
     },
+
     {
         word: "Innovative",
-        definition: "Introducing new ideas, methods, or technology.",
-        example: "\"The team developed an innovative solution.\""
+        pronunciation: "/ˈɪnəveɪtɪv/",
+        definition:
+            "Introducing new ideas, methods, or technology.",
+        example:
+            "The team developed an innovative solution.",
+        category: "Learning",
+        level: "Advanced"
     },
+
     {
         word: "Confident",
-        definition: "Feeling sure about your abilities or decisions.",
-        example: "\"She felt confident before the presentation.\""
+        pronunciation: "/ˈkɒnfɪdənt/",
+        definition:
+            "Feeling sure about your abilities or decisions.",
+        example:
+            "She felt confident before the presentation.",
+        category: "Emotions",
+        level: "Beginner"
+    },
+
+    {
+        word: "Serene",
+        pronunciation: "/səˈriːn/",
+        definition:
+            "Calm, peaceful, and untroubled.",
+        example:
+            "The lake looked serene in the early morning.",
+        category: "Nature",
+        level: "Advanced"
+    },
+
+    {
+        word: "Wander",
+        pronunciation: "/ˈwɒndə/",
+        definition:
+            "To walk or move around without a particular destination.",
+        example:
+            "We decided to wander around the town.",
+        category: "Places",
+        level: "Beginner"
+    },
+
+    {
+        word: "Vibrant",
+        pronunciation: "/ˈvaɪbrənt/",
+        definition:
+            "Full of energy, excitement, or colour.",
+        example:
+            "The city has a vibrant cultural scene.",
+        category: "Places",
+        level: "Intermediate"
+    },
+
+    {
+        word: "Meticulous",
+        pronunciation: "/məˈtɪkjələs/",
+        definition:
+            "Very careful and precise about details.",
+        example:
+            "She was meticulous when checking her work.",
+        category: "Everyday",
+        level: "Advanced"
     }
+
 ];
 
-function getDailyWord() {
 
-    const day = Math.floor(
-        new Date().getTime() / (1000 * 60 * 60 * 24)
-    );
+/* =========================
+   NAVIGATION
+========================= */
 
-    return words[day % words.length];
+function showPage(pageId) {
+
+    document.querySelectorAll(".page").forEach(page => {
+        page.classList.remove("active");
+    });
+
+    const page = document.getElementById(pageId);
+
+    if (page) {
+        page.classList.add("active");
+    }
+
+    document.getElementById("navLinks").classList.remove("open");
+
+    if (pageId === "words") {
+        renderWords();
+    }
+
+    if (pageId === "progress") {
+        updateProgress();
+    }
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
 }
 
-function loadDailyWord() {
 
-    const daily = getDailyWord();
-
-    document.getElementById("dailyWord").textContent = daily.word;
-
-    document.getElementById("definition").textContent =
-        daily.definition;
-
-    document.getElementById("example").textContent =
-        daily.example;
-
-    document.getElementById("dictionaryLink").href =
-        "https://dictionary.cambridge.org/dictionary/english/" +
-        daily.word.toLowerCase();
+function toggleMenu() {
+    document.getElementById("navLinks").classList.toggle("open");
 }
+
+
+/* =========================
+   THEME
+========================= */
 
 function toggleTheme() {
 
     document.body.classList.toggle("light");
 
+    const isLight =
+        document.body.classList.contains("light");
+
     localStorage.setItem(
         "theme",
-        document.body.classList.contains("light")
-            ? "light"
-            : "dark"
+        isLight ? "light" : "dark"
     );
+
+    document.getElementById("themeButton").textContent =
+        isLight ? "☀️" : "🌙";
 }
+
 
 function loadTheme() {
 
     if (localStorage.getItem("theme") === "light") {
+
         document.body.classList.add("light");
+
+        document.getElementById("themeButton").textContent =
+            "☀️";
     }
 }
 
-function searchWord(event) {
 
-    if (event.key === "Enter") {
+/* =========================
+   DAILY WORD
+========================= */
 
-        const search =
-            document.getElementById("searchInput").value
+function getDailyWord() {
+
+    const start =
+        new Date(
+            new Date().getFullYear(),
+            0,
+            0
+        );
+
+    const today = new Date();
+
+    const difference =
+        today - start;
+
+    const day =
+        Math.floor(
+            difference /
+            (1000 * 60 * 60 * 24)
+        );
+
+    return words[day % words.length];
+}
+
+
+function loadDailyWord() {
+
+    const daily = getDailyWord();
+
+    document.getElementById("todayDate").textContent =
+        new Date().toDateString();
+
+    document.getElementById("dailyCategory").textContent =
+        daily.category;
+
+    document.getElementById("homeDailyWord").textContent =
+        daily.word;
+
+    document.getElementById("homeDailyPronunciation").textContent =
+        daily.pronunciation;
+
+    document.getElementById("homeDailyMeaning").textContent =
+        daily.definition;
+
+    document.getElementById("homeDailyExample").textContent =
+        `"${daily.example}"`;
+
+    updateDailyFavoriteButton();
+}
+
+
+function speakDailyWord() {
+
+    const daily = getDailyWord();
+
+    if ("speechSynthesis" in window) {
+
+        const speech =
+            new SpeechSynthesisUtterance(daily.word);
+
+        speech.lang = "en-NZ";
+
+        window.speechSynthesis.speak(speech);
+
+    } else {
+
+        alert("Speech synthesis is not supported by your browser.");
+
+    }
+}
+
+
+function copyDailyWord() {
+
+    const daily = getDailyWord();
+
+    const text =
+`${daily.word}
+
+${daily.definition}
+
+Example: ${daily.example}`;
+
+    navigator.clipboard.writeText(text)
+        .then(() => {
+            alert("Word copied!");
+        })
+        .catch(() => {
+            alert("Unable to copy the word.");
+        });
+}
+
+
+/* =========================
+   FAVOURITES
+========================= */
+
+function getSavedWords() {
+
+    return JSON.parse(
+        localStorage.getItem("savedWords") || "[]"
+    );
+}
+
+
+function saveWords(saved) {
+
+    localStorage.setItem(
+        "savedWords",
+        JSON.stringify(saved)
+    );
+}
+
+
+function toggleFavorite(word) {
+
+    let saved = getSavedWords();
+
+    if (saved.includes(word)) {
+
+        saved = saved.filter(
+            item => item !== word
+        );
+
+    } else {
+
+        saved.push(word);
+
+    }
+
+    saveWords(saved);
+
+    renderWords();
+    updateProgress();
+    updateDailyFavoriteButton();
+}
+
+
+function toggleDailyFavorite() {
+
+    toggleFavorite(
+        getDailyWord().word
+    );
+}
+
+
+function updateDailyFavoriteButton() {
+
+    const button =
+        document.getElementById("dailyFavorite");
+
+    if (!button) return;
+
+    const saved = getSavedWords();
+
+    const isSaved =
+        saved.includes(getDailyWord().word);
+
+    button.textContent =
+        isSaved ? "★ Saved" : "☆ Save";
+}
+
+
+/* =========================
+   WORD LIBRARY
+========================= */
+
+function renderWords() {
+
+    const grid =
+        document.getElementById("wordGrid");
+
+    if (!grid) return;
+
+    const search =
+        document.getElementById("wordSearch")
+            .value
             .trim()
             .toLowerCase();
 
-        if (search) {
+    const category =
+        document.getElementById("categoryFilter")
+            .value;
 
-            window.location.href =
-                "words.html?search=" +
-                encodeURIComponent(search);
+    const level =
+        document.getElementById("levelFilter")
+            .value;
 
-        }
+    const saved =
+        getSavedWords();
+
+    const filtered =
+        words.filter(item => {
+
+            const matchesSearch =
+                item.word
+                    .toLowerCase()
+                    .includes(search) ||
+                item.definition
+                    .toLowerCase()
+                    .includes(search);
+
+            const matchesCategory =
+                category === "all" ||
+                item.category === category;
+
+            const matchesLevel =
+                level === "all" ||
+                item.level === level;
+
+            return (
+                matchesSearch &&
+                matchesCategory &&
+                matchesLevel
+            );
+        });
+
+
+    if (filtered.length === 0) {
+
+        grid.innerHTML = `
+            <div class="card">
+                <h3>No words found</h3>
+                <p>Try a different search or filter.</p>
+            </div>
+        `;
+
+        return;
+    }
+
+
+    grid.innerHTML =
+        filtered.map(item => {
+
+            const isSaved =
+                saved.includes(item.word);
+
+            return `
+                <div class="word-card">
+
+                    <h3>${item.word}</h3>
+
+                    <div class="pronunciation">
+                        ${item.pronunciation}
+                    </div>
+
+                    <div class="word-meta">
+                        <span class="badge">
+                            ${item.category}
+                        </span>
+
+                        <span class="badge">
+                            ${item.level}
+                        </span>
+                    </div>
+
+                    <p>
+                        ${item.definition}
+                    </p>
+
+                    <p>
+                        <em>"${item.example}"</em>
+                    </p>
+
+                    <div class="word-actions">
+
+                        <button
+                            class="small-btn"
+                            onclick="speakWord('${item.word}')">
+                            🔊 Pronounce
+                        </button>
+
+                        <button
+                            class="small-btn"
+                            onclick="toggleFavorite('${item.word}')">
+                            ${isSaved ? "★ Saved" : "☆ Save"}
+                        </button>
+
+                    </div>
+
+                </div>
+            `;
+
+        }).join("");
+}
+
+
+function speakWord(word) {
+
+    if ("speechSynthesis" in window) {
+
+        const speech =
+            new SpeechSynthesisUtterance(word);
+
+        speech.lang = "en-NZ";
+
+        window.speechSynthesis.speak(speech);
     }
 }
 
-document.getElementById("date").textContent =
-    new Date().toDateString();
 
-loadDailyWord();
-loadTheme();
+/* =========================
+   QUIZ
+========================= */
+
+let quizQuestions = [];
+let currentQuestion = 0;
+let quizScore = 0;
+
+
+function shuffle(array) {
+
+    return [...array].sort(
+        () => Math.random() - 0.5
+    );
+}
+
+
+function startQuiz() {
+
+    quizQuestions =
+        shuffle(words).slice(0, 10);
+
+    currentQuestion = 0;
+    quizScore = 0;
+
+    document.getElementById("quizCard")
+        .style.display = "block";
+
+    document.getElementById("quizResult")
+        .style.display = "none";
+
+    showQuestion();
+}
+
+
+function showQuestion() {
+
+    const item =
+        quizQuestions[currentQuestion];
+
+    document.getElementById("quizCounter")
+        .textContent =
+        `Question ${currentQuestion + 1} of ${quizQuestions.length}`;
+
+    document.getElementById("quizScore")
+        .textContent =
+        `Score: ${quizScore}`;
+
+    document.getElementById("question")
+        .textContent =
+        `What does "${item.word}" mean?`;
+
+    const answers =
+        document.getElementById("answers");
+
+    answers.innerHTML = "";
+
+    const incorrect =
+        shuffle(
+            words.filter(
+                word => word.word !== item.word
+            )
+        ).slice(0, 3);
+
+    const choices =
+        shuffle([
+            item,
+            ...incorrect
+        ]);
+
+    choices.forEach(choice => {
+
+        const button =
+            document.createElement("button");
+
+        button.className = "answer-btn";
+
+        button.textContent =
+            choice.definition;
+
+        button.onclick =
+            () => selectAnswer(
+                button,
+                choice.word === item.word,
+                item.definition
+            );
+
+        answers.appendChild(button);
+
+    });
+
+    document.getElementById("nextButton")
+        .style.display = "none";
+}
+
+
+function selectAnswer(
+    button,
+    correct,
+    correctAnswer
+) {
+
+    const buttons =
+        document.querySelectorAll(".answer-btn");
+
+    buttons.forEach(btn => {
+        btn.disabled = true;
+    });
+
+    if (correct) {
+
+        button.classList.add("correct");
+
+        quizScore++;
+
+    } else {
+
+        button.classList.add("wrong");
+
+        buttons.forEach(btn => {
+
+            if (btn.textContent === correctAnswer) {
+                btn.classList.add("correct");
+            }
+
+        });
+
+    }
+
+    document.getElementById("quizScore")
+        .textContent =
+        `Score: ${quizScore}`;
+
+    document.getElementById("nextButton")
+        .style.display = "block";
+}
+
+
+function nextQuestion() {
+
+    currentQuestion++;
+
+    if (
+        currentQuestion >=
+        quizQuestions.length
+    ) {
+
+        finishQuiz();
+
+    } else {
+
+        showQuestion();
+
+    }
+}
+
+
+function finishQuiz() {
+
+    document.getElementById("quizCard")
+        .style.display = "none";
+
+    document.getElementById("quizResult")
+        .style.display = "block";
+
+    document.getElementById("finalScore")
+        .textContent =
+        `You scored ${quizScore} out of ${quizQuestions.length}.`;
+
+    saveQuizResult();
+}
+
+
+/* =========================
+   PROGRESS
+========================= */
+
+function saveQuizResult() {
+
+    const total =
+        Number(
+            localStorage.getItem("totalQuizzes") || 0
+        );
+
+    const best =
+        Number(
+            localStorage.getItem("bestScore") || 0
+        );
+
+    localStorage.setItem(
+        "totalQuizzes",
+        total + 1
+    );
+
+    if (quizScore > best) {
+
+        localStorage.setItem(
+            "bestScore",
+            quizScore
+        );
+
+    }
+
+    updateProgress();
+}
+
+
+function updateProgress() {
+
+    const total =
+        Number(
+            localStorage.getItem("totalQuizzes") || 0
+        );
+
+    const best =
+        Number(
+            localStorage.getItem("bestScore") || 0
+        );
+
+    const saved =
+        getSavedWords().length;
+
+    const percentage =
+        Math.round(
+            (best / 10) * 100
+        );
+
+    document.getElementById("totalQuizzes")
+        .textContent = total;
+
+    document.getElementById("bestScore")
+        .textContent = best + "/10";
+
+    document.getElementById("savedWords")
+        .textContent = saved;
+
+    document.getElementById("progressPercent")
+        .textContent =
+        percentage + "%";
+
+    document.getElementById("progressFill")
+        .style.width =
+        percentage + "%";
+}
+
+
+/* =========================
+   SEARCH
+========================= */
+
+function searchWord(event) {
+
+    if (event.key !== "Enter") return;
+
+    const search =
+        event.target.value
+            .trim()
+            .toLowerCase();
+
+    showPage("words");
+
+    document.getElementById("wordSearch")
+        .value = search;
+
+    renderWords();
+}
+
+
+/* =========================
+   INITIALISE
+========================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        loadTheme();
+        loadDailyWord();
+        renderWords();
+        updateProgress();
+        startQuiz();
+
+    }
+);
 
 </script>
 
- 
-<div class="word-grid" id="wordGrid"></div> 
-  
-
-<div class="section-title"> 
-  <h2>🎯 Vocabulary Challenge</h2> 
-  <p>Answer 10 questions and see how much you know.</p> 
-</div> 
- 
-<div class="quiz-card" id="quizCard"> 
- 
-  <div class="quiz-top"> 
-    <span class="badge" id="quizCounter"> 
-      Question 1 of 10 
-    </span> 
- 
-    <span class="badge" id="quizScore"> 
-      Score: 0 
-    </span> 
-  </div> 
- 
-  <div class="question" id="question"> 
-    Loading... 
-  </div> 
- 
-  <div class="answers" id="answers"></div> 
- 
-  <button 
-    id="nextButton" 
-    class="btn" 
-    onclick="nextQuestion()" 
-    style="display:none; margin-top:20px;"> 
-    Next Question → 
-  </button> 
- 
-</div> 
- 
-
-
-<div class="quiz-result" id="quizResult"> 
- 
-  <h2>🎉 Challenge Complete!</h2> 
- 
-  <p id="finalScore"></p> 
- 
-  <button 
-    class="btn purple" 
-    onclick="startQuiz()" 
-    style="margin-top:20px;"> 
-    🔄 Try Again 
-  </button> 
- 
-  <button 
-    class="btn" 
-    onclick="showPage('progress')" 
-    style="margin-top:20px;"> 
-    📊 View Progress 
-  </button> 
- 
-</div> 
-  
-
-<div class="section-title"> 
-  <h2>📊 Your Progress</h2> 
-  <p>Keep learning and build your vocabulary.</p> 
-</div> 
- 
-<div class="progress-card"> 
- 
-  <div class="progress-number" id="progressPercent"> 
-    0% 
-  </div> 
- 
-  <div class="progress-bar"> 
-    <div 
-      class="progress-fill" 
-      id="progressFill"> 
-    </div> 
-  </div> 
- 
-
- 
-  <div class="stats"> 
- 
-    <div class="stat"> 
-      <strong id="totalQuizzes">0</strong> 
-      Quizzes 
-    </div> 
- 
-    <div class="stat"> 
-      <strong id="bestScore">0</strong> 
-      Best Score 
-    </div> 
- 
-    <div class="stat"> 
-      <strong id="savedWords">0</strong> 
-      Saved Words 
-    </div> 
- 
-  </div> 
- 
-  <button 
-    class="btn" 
-    style="width:100%; margin-top:25px;" 
-    onclick="showPage('challenge')"> 
-    🎯 Practice Now 
-  </button> 
- 
-</div> 
-  
-
-<div class="section-title"> 
-  <h2>ℹ️ About Daily Word NZ</h2> 
-</div> 
- 
-<div class="about-card"> 
- 
-  <h2>Learn something new every day 🇳🇿</h2> 
- 
-  <p> 
-    Daily Word NZ is a simple vocabulary learning website designed 
-    to help you discover new words, understand their meanings and 
-    practise them through quizzes. 
-  </p> 
- 
-  <br> 
- 
-  <p> 
-
-
-    </div>
-
-  Explore the library, save your favourite words, listen to 
-    pronunciations and challenge yourself with the vocabulary quiz. 
-  </p> 
- 
-  <br> 
- 
-  <p> 
-    Keep practising a little every day and your vocabulary will 
-    continue to grow. 
-  </p> 
- 
-</div> 
-  
-
-© 2026 Daily Word NZ | Built by Saimone Matangi 
+</body>
+</html>
+```
