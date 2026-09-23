@@ -1,19 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Daily Word NZ</title>
-
-    <footer>
-    © 2026 Daily Word NZ | Built by Saimone Matangi
-</footer>
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
-        rel="stylesheet"
-    >
+<div class="logo" onclick="showPage('home')"> 
+  🇳🇿 Daily Word NZ 
+</div> 
+ 
+<button class="menu-btn" onclick="toggleMenu()">☰</button> 
+ 
+<ul class="nav-links" id="navLinks"> 
+  <li><a href="#" onclick="showPage('home'); return false;">Home</a></li> 
+  <li><a href="#" onclick="showPage('words'); return false;">Words</a></li> 
+  <li><a href="#" onclick="showPage('challenge'); return false;">Challenge</a></li> 
+  <li><a href="#" onclick="showPage('progress'); return false;">Progress</a></li> 
+  <li><a href="#" onclick="showPage('about'); return false;">About</a></li> 
+</ul> 
 
     <style>
         * {
